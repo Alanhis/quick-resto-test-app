@@ -1,0 +1,13 @@
+.map-container {
+  width: 1000px;
+  height: 1000px;
+}
+.marker .text {
+  display: none;
+}
+.marker:hover .text {
+  display: flex;
+  background: white;
+  border-radius: 45px;
+  padding: 10px;
+}
