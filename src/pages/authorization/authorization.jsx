@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { CookieCheck } from "../../utils/cookie-check";
+import "./authorization.css";
 export function AuthorizationPage() {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +13,7 @@ export function AuthorizationPage() {
   return (
     <section>
       <form
+        className="login-container"
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -25,6 +27,7 @@ export function AuthorizationPage() {
         }}
       >
         <input
+          className="login-input"
           value={username}
           onChange={(e) => {
             setUserName(e.target.value);
@@ -32,6 +35,7 @@ export function AuthorizationPage() {
           placeholder="Логин"
         />
         <input
+          className="login-input"
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
@@ -39,7 +43,7 @@ export function AuthorizationPage() {
           type="password"
           placeholder="Пароль"
         />
-        <button>Вход</button>
+        <button className="login-input">Вход</button>
       </form>
     </section>
   );
