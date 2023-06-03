@@ -38,6 +38,21 @@ export function MapPage() {
 
         <div className="text" style={{ color: "black", marginLeft: "2rem" }}>
           {props?.textMark} x{props?.amount}
+          <button
+            onClick={() => {
+              console.log("marker", markers, "props", props);
+              console.log("filter");
+              setMarkers(
+                markers.filter((el) =>
+                  el?.top === props?.top && el?.left === props?.left
+                    ? false
+                    : true
+                )
+              );
+            }}
+          >
+            x
+          </button>
         </div>
       </div>
     );
@@ -46,6 +61,7 @@ export function MapPage() {
   return (
     <>
       <button
+        className="exit-button"
         onClick={() => {
           document.cookie = "user=; max-age=0"; // Удаляем cookie
           navigate("/"); // Переносим на логин страницу
