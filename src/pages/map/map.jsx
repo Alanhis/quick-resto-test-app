@@ -45,13 +45,23 @@ export function MapPage() {
   };
 
   return (
-    <div className="map-container">
-      <ImageMarker
-        src={TestSvg}
-        markers={markers}
-        onAddMarker={(marker) => setMarkers((prev) => [...prev, marker])}
-        markerComponent={CustomMarker}
-      />
-    </div>
+    <>
+      <button
+        onClick={() => {
+          document.cookie = "user=; max-age=0"; // Удаляем cookie
+          navigate("/"); // Переносим на логин страницу
+        }}
+      >
+        Выход
+      </button>
+      <div className="map-container">
+        <ImageMarker
+          src={TestSvg}
+          markers={markers}
+          onAddMarker={(marker) => setMarkers((prev) => [...prev, marker])}
+          markerComponent={CustomMarker}
+        />
+      </div>
+    </>
   );
 }
