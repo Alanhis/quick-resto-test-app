@@ -3,8 +3,6 @@ import { AuthorizationPage } from "./pages/authorization/authorization";
 import { MapPage } from "./pages/map/map";
 
 function App() {
-  console.log(document.cookie);
-
   return (
     <div>
       <Routes>

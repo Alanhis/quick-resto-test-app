@@ -15,7 +15,6 @@ export function MapPage() {
   }); // Проверка закончился период доступа
   useEffect(() => {
     TestData.forEach((data) => {
-      console.log(data);
       setMarkers((oldData) => [
         ...oldData,
         {
