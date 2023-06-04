@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CookieCheck } from "../../utils/cookie-check";
 import TestData from "../../utils/model.json";
-import { ReactDOM } from "react";
 import TestSvg from "../../utils/tutzing.svg";
 import ImageMarker from "react-image-marker";
 import "./map-style.css";
@@ -30,6 +29,11 @@ export function MapPage() {
     const [name, setName] = useState();
     const [amount, setAmount] = useState();
     const [editable, setEditable] = useState(false);
+    useEffect(() => {
+      if (props.amount === undefined && props.textMark === undefined) {
+        setEditable(true);
+      }
+    }, [props]);
     return (
       <div className="marker" style={{ display: "flex" }}>
         <div
