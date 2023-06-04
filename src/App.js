@@ -7,8 +7,8 @@ function App() {
     <div>
       <Routes>
         <Route>
-          <Route path="/" Component={AuthorizationPage} />
-          <Route path="/map" Component={MapPage} />
+          <Route path="/quick-resto-test-app" Component={AuthorizationPage} />
+          <Route path="/quick-resto-test-app/map" Component={MapPage} />
         </Route>
       </Routes>
     </div>

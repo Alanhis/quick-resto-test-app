@@ -21,7 +21,7 @@ export function AuthorizationPage() {
             // Проверка на правильное данные логина и пароля
             console.log("Вход в систему");
             document.cookie = "user=" + username + "; max-age=1200"; // Добавление данных авторизации с таймером в 20 минут
-            navigate("/map"); // Перенаправление на страницу с картой
+            navigate("/quick-resto-test-app/map"); // Перенаправление на страницу с картой
           } else {
             console.log("Введите верные данные");
           }

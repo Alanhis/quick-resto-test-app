@@ -135,7 +135,7 @@ export function MapPage() {
         className="exit-button" //Кнопка выхода на страницу авторазицию
         onClick={() => {
           document.cookie = "user=; max-age=0"; // Удаляем cookie
-          navigate("/"); // Переносим на логин страницу
+          navigate("/quick-resto-test-app"); // Переносим на логин страницу
         }}
       >
         Выход
