@@ -13,17 +13,33 @@ export function MapPage() {
     CookieCheck({ navigate, location });
   }); // Проверка закончился период доступа
   useEffect(() => {
-    TestData.forEach((data) => {
-      setMarkers((oldData) => [
-        ...oldData,
-        {
-          top: data.x,
-          left: data.y - 3,
-          textMark: data.name,
-          amount: data.amount,
-        },
-      ]);
-    });
+    var localData = JSON.parse(localStorage.getItem("data"));
+
+    if (localData) {
+      localData.forEach((data) => {
+        setMarkers((oldData) => [
+          ...oldData,
+          {
+            top: data.top,
+            left: data.left,
+            textMark: data.textMark,
+            amount: data.amount,
+          },
+        ]);
+      });
+    } else {
+      TestData.forEach((data) => {
+        setMarkers((oldData) => [
+          ...oldData,
+          {
+            top: data.x,
+            left: data.y - 3,
+            textMark: data.name,
+            amount: data.amount,
+          },
+        ]);
+      });
+    }
   }, []); // Подгрузка первичных элементов
   const CustomMarker = (props) => {
     const [name, setName] = useState();
@@ -33,15 +49,16 @@ export function MapPage() {
       if (props.amount === undefined && props.textMark === undefined) {
         setEditable(true);
       }
-    }, [props]);
+      if (props.top && props.left) {
+        localStorage.setItem("data", JSON.stringify(markers));
+      }
+    }, [props]); // Активируется в случае добавления новых элементов
     return (
       <div className="marker" style={{ display: "flex" }}>
         <div
           className="image-marker__marker image-marker__marker--default "
           data-testid="marker"
-        >
-          {/* {props.itemNumber} */}
-        </div>
+        ></div>
 
         <div className="text" style={{ color: "black", marginLeft: "2rem" }}>
           {editable ? (
@@ -83,8 +100,6 @@ export function MapPage() {
               {props?.textMark} x{props?.amount}
               <button
                 onClick={() => {
-                  console.log("marker", markers, "props", props);
-                  console.log("filter");
                   setMarkers(
                     markers.filter((el) =>
                       el?.top === props?.top && el?.left === props?.left
