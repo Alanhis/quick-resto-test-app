@@ -10,6 +10,8 @@
   background: white;
   border-radius: 45px;
   padding: 10px;
+  gap: 5px;
+  align-items: center;
 }
 .exit-button {
   border: none;
@@ -40,4 +42,6 @@
 .map-change-button {
   border: none;
   background: white;
+  width: 4vw;
+  height: 15px;
 }

@@ -97,6 +97,7 @@ export function MapPage() {
             <>
               {props?.textMark} x{props?.amount}
               <button
+                className="map-change-button"
                 onClick={() => {
                   let deleteData = markers.filter((el) =>
                     el?.top === props?.top && el?.left === props?.left
@@ -110,6 +111,7 @@ export function MapPage() {
                 x
               </button>
               <button
+                className="map-change-button"
                 onClick={() => {
                   setEditable(true);
                 }}
