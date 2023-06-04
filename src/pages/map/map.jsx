@@ -64,6 +64,8 @@ export function MapPage() {
                   placeholder="Имя"
                 />
                 <input
+                  type="text"
+                  pattern="[0-9]*"
                   onChange={(e) => {
                     setAmount(e.target.value);
                   }}
