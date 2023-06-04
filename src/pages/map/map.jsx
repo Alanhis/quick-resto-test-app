@@ -134,7 +134,26 @@ export function MapPage() {
       >
         Выход
       </button>
-      <button className="reset-button">Сбросить</button>
+      <button
+        onClick={() => {
+          localStorage.removeItem("data");
+          setMarkers([]);
+          TestData.forEach((data) => {
+            setMarkers((oldData) => [
+              ...oldData,
+              {
+                top: data.x,
+                left: data.y - 3,
+                textMark: data.name,
+                amount: data.amount,
+              },
+            ]);
+          });
+        }}
+        className="reset-button"
+      >
+        Сбросить
+      </button>
       <div className="map-container">
         <ImageMarker
           src={TestSvg}
