@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/quick-resto-test-app/static/css/main.e6f5d549.css",
+    "main.js": "/quick-resto-test-app/static/js/main.3e752dcc.js",
+    "static/js/787.bf96f91c.chunk.js": "/quick-resto-test-app/static/js/787.bf96f91c.chunk.js",
+    "static/media/tutzing.svg": "/quick-resto-test-app/static/media/tutzing.f178193eda7c52e5b16661b364a0f3d2.svg",
+    "index.html": "/quick-resto-test-app/index.html",
+    "main.e6f5d549.css.map": "/quick-resto-test-app/static/css/main.e6f5d549.css.map",
+    "main.3e752dcc.js.map": "/quick-resto-test-app/static/js/main.3e752dcc.js.map",
+    "787.bf96f91c.chunk.js.map": "/quick-resto-test-app/static/js/787.bf96f91c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6f5d549.css",
+    "static/js/main.3e752dcc.js"
+  ]
+}
