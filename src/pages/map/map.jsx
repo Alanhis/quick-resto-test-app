@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CookieCheck } from "../../utils/cookie-check";
+
+import ImageMarker from "react-image-marker";
 import TestData from "../../utils/model.json";
 import TestSvg from "../../utils/tutzing.svg";
-import ImageMarker from "react-image-marker";
 import "./map-style.css";
 export function MapPage() {
   const location = useLocation().pathname;
@@ -15,6 +16,7 @@ export function MapPage() {
   useEffect(() => {
     var localData = JSON.parse(localStorage.getItem("data"));
     if (localData) {
+      //Добавление макетов, если есть данные в localStorage
       localData.forEach((data) => {
         setMarkers((oldData) => [
           ...oldData,
@@ -27,6 +29,7 @@ export function MapPage() {
         ]);
       });
     } else {
+      // Данных нет, берем данные из файла
       TestData.forEach((data) => {
         setMarkers((oldData) => [
           ...oldData,
@@ -57,31 +60,32 @@ export function MapPage() {
         ></div>
 
         <div className="text" style={{ color: "black", marginLeft: "2rem" }}>
-          {editable ? (
+          {editable ? ( // Проверка находится ли маркер в режиме редактирования
             <>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   let sendData = markers.map((each) => {
                     if (each.top === props.top && each.left === props.left) {
-                      return { ...each, textMark: name, amount: amount };
+                      //Поиск необходимого элемента по координентам
+                      return { ...each, textMark: name, amount: amount }; // Изменение данных
                     } else {
                       return each;
                     }
                   });
                   setMarkers(sendData);
-                  localStorage.setItem("data", JSON.stringify(sendData));
+                  localStorage.setItem("data", JSON.stringify(sendData)); //Добавление измененных данных в localStorage
                   setEditable(false);
                 }}
               >
-                <input
+                <input // Поле ввода наименования элемента
                   className="map-input"
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
                   placeholder="Имя"
                 />
-                <input
+                <input // Поле ввода количества элементов
                   className="map-input"
                   type="text"
                   pattern="[0-9]*"
@@ -100,12 +104,12 @@ export function MapPage() {
                 className="map-change-button"
                 onClick={() => {
                   let deleteData = markers.filter((el) =>
-                    el?.top === props?.top && el?.left === props?.left
+                    el?.top === props?.top && el?.left === props?.left // Удаление элемента с определенными координатами
                       ? false
                       : true
                   );
                   setMarkers(deleteData);
-                  localStorage.setItem("data", JSON.stringify(deleteData));
+                  localStorage.setItem("data", JSON.stringify(deleteData)); // Перенос измененных даннных
                 }}
               >
                 x
@@ -128,7 +132,7 @@ export function MapPage() {
   return (
     <>
       <button
-        className="exit-button"
+        className="exit-button" //Кнопка выхода на страницу авторазицию
         onClick={() => {
           document.cookie = "user=; max-age=0"; // Удаляем cookie
           navigate("/"); // Переносим на логин страницу
@@ -138,10 +142,12 @@ export function MapPage() {
       </button>
       <button
         onClick={() => {
-          localStorage.removeItem("data");
-          setMarkers([]);
+          //Кнопка сбросса
+          localStorage.removeItem("data"); // Удаление Array-я с LocalStorage-жа
+          setMarkers([]); // Чистка текущих маркеров
           TestData.forEach((data) => {
             setMarkers((oldData) => [
+              // Получения данных из файла
               ...oldData,
               {
                 top: data.x,
