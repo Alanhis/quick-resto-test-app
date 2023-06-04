@@ -14,7 +14,6 @@ export function MapPage() {
   }); // Проверка закончился период доступа
   useEffect(() => {
     var localData = JSON.parse(localStorage.getItem("data"));
-
     if (localData) {
       localData.forEach((data) => {
         setMarkers((oldData) => [
@@ -49,9 +48,6 @@ export function MapPage() {
       if (props.amount === undefined && props.textMark === undefined) {
         setEditable(true);
       }
-      if (props.top && props.left) {
-        localStorage.setItem("data", JSON.stringify(markers));
-      }
     }, [props]); // Активируется в случае добавления новых элементов
     return (
       <div className="marker" style={{ display: "flex" }}>
@@ -66,25 +62,27 @@ export function MapPage() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  setMarkers(
-                    markers.map((each) => {
-                      if (each.top === props.top && each.left === props.left) {
-                        return { ...each, textMark: name, amount: amount };
-                      } else {
-                        return each;
-                      }
-                    })
-                  );
+                  let sendData = markers.map((each) => {
+                    if (each.top === props.top && each.left === props.left) {
+                      return { ...each, textMark: name, amount: amount };
+                    } else {
+                      return each;
+                    }
+                  });
+                  setMarkers(sendData);
+                  localStorage.setItem("data", JSON.stringify(sendData));
                   setEditable(false);
                 }}
               >
                 <input
+                  className="map-input"
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
                   placeholder="Имя"
                 />
                 <input
+                  className="map-input"
                   type="text"
                   pattern="[0-9]*"
                   onChange={(e) => {
@@ -92,7 +90,7 @@ export function MapPage() {
                   }}
                   placeholder="Кол-во"
                 />
-                <button>Save</button>
+                <button className="map-change-button">Save</button>
               </form>
             </>
           ) : (
@@ -100,13 +98,13 @@ export function MapPage() {
               {props?.textMark} x{props?.amount}
               <button
                 onClick={() => {
-                  setMarkers(
-                    markers.filter((el) =>
-                      el?.top === props?.top && el?.left === props?.left
-                        ? false
-                        : true
-                    )
+                  let deleteData = markers.filter((el) =>
+                    el?.top === props?.top && el?.left === props?.left
+                      ? false
+                      : true
                   );
+                  setMarkers(deleteData);
+                  localStorage.setItem("data", JSON.stringify(deleteData));
                 }}
               >
                 x
@@ -136,6 +134,7 @@ export function MapPage() {
       >
         Выход
       </button>
+      <button className="reset-button">Сбросить</button>
       <div className="map-container">
         <ImageMarker
           src={TestSvg}
