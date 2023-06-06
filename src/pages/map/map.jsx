@@ -7,12 +7,15 @@ import TestData from "../../utils/model.json";
 import TestSvg from "../../utils/tutzing.svg";
 import "./map-style.css";
 export function MapPage() {
+  // РЕВЬЮ: нейминг может запутать, ты называешь константу location, а внутри хранится pathname
   const location = useLocation().pathname;
   const navigate = useNavigate();
   let [markers, setMarkers] = useState([]);
   useEffect(() => {
     CookieCheck({ navigate, location });
   }); // Проверка закончился период доступа
+  // РЕВЬЮ: в хуке выше ты не передаешь deps, это умышленно?
+  // просто хук ниже имеет такую же логику (срабатывать 1 раз), но зависимости преедаются
   useEffect(() => {
     var localData = JSON.parse(localStorage.getItem("data"));
     if (localData) {
@@ -34,7 +37,9 @@ export function MapPage() {
         setMarkers((oldData) => [
           ...oldData,
           {
+            //  РЕВЬЮ: для чего данные из x, y и name становятся top, left и textMark?
             top: data.x,
+            // РЕВЬЮ: зачем -3?
             left: data.y - 3,
             textMark: data.name,
             amount: data.amount,
@@ -53,18 +58,22 @@ export function MapPage() {
       }
     }, [props]); // Активируется в случае добавления новых элементов
     return (
+        // РЕВЬЮ: чем вызвана необходимость инлайновых стилей?
       <div className="marker" style={{ display: "flex" }}>
         <div
           className="image-marker__marker image-marker__marker--default "
           data-testid="marker"
         ></div>
 
+        {/* РЕВЬЮ: чем вызвана необходимость инлайновых стилей? */}
         <div className="text" style={{ color: "black", marginLeft: "2rem" }}>
           {editable ? ( // Проверка находится ли маркер в режиме редактирования
             <>
+              {/* РЕВЬЮ: должна ли форма иметь нестабильные размеры и находиться под соседними маркерами? */}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  // РЕВЬЮ: довольно сложно осознать, что элемент массива markers называется each и почему тут let?
                   let sendData = markers.map((each) => {
                     if (each.top === props.top && each.left === props.left) {
                       //Поиск необходимого элемента по координентам
@@ -104,6 +113,7 @@ export function MapPage() {
                 className="map-change-button"
                 onClick={() => {
                   let deleteData = markers.filter((el) =>
+                    //  РЕВЬЮ: можно ли как-то упростить
                     el?.top === props?.top && el?.left === props?.left // Удаление элемента с определенными координатами
                       ? false
                       : true
@@ -145,6 +155,7 @@ export function MapPage() {
           //Кнопка сбросса
           localStorage.removeItem("data"); // Удаление Array-я с LocalStorage-жа
           setMarkers([]); // Чистка текущих маркеров
+          // РЕВЬЮ: дублирование кода, точно такой же проход, что и в useEffect, мб стоит вынести в 1 место?
           TestData.forEach((data) => {
             setMarkers((oldData) => [
               // Получения данных из файла
@@ -163,6 +174,7 @@ export function MapPage() {
         Сбросить
       </button>
       <div className="map-container">
+        {/* РЕВЬЮ: что произойдет, если я натыкаю 10 точек на карте, не вводя данные, а потом тыкну 11, введу данные и нажму сохранить? */}
         <ImageMarker
           src={TestSvg}
           markers={markers}
