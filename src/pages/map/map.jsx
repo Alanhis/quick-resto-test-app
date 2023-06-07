@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CookieCheck } from "../../utils/cookie-check";
+import { cookieCheck } from "../../utils/cookie-check";
 
 import ImageMarker from "react-image-marker";
 import TestData from "../../utils/model.json";
@@ -13,7 +13,7 @@ export function MapPage() {
   const navigate = useNavigate();
   let [markers, setMarkers] = useState([]);
   useEffect(() => {
-    CookieCheck({ navigate, pathname });
+    cookieCheck({ navigate, pathname });
   }); // Проверка закончился период доступа
   // РЕВЬЮ: в хуке выше ты не передаешь deps, это умышленно?
   // просто хук ниже имеет такую же логику (срабатывать 1 раз), но зависимости преедаются
@@ -160,7 +160,7 @@ export function MapPage() {
       <button
         className="delete-button"
         onClick={() => {
-          localStorage.setItem("data", []);
+          localStorage.setItem("data", JSON.stringify([]));
           setMarkers([]);
         }}
       >
