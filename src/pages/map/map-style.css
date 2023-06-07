@@ -5,7 +5,12 @@
 .marker .text {
   display: none;
 }
+.marker {
+  display: flex;
+}
 .marker:hover .text {
+  color: black;
+  margin-left: 2rem;
   display: flex;
   background: white;
   border-radius: 45px;
@@ -30,6 +35,17 @@
   z-index: 1;
   top: 5px;
   left: 110px;
+  border-radius: 15px;
+  width: 100px;
+  height: 20px;
+  background: white;
+}
+.delete-button {
+  border: none;
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  left: 220px;
   border-radius: 15px;
   width: 100px;
   height: 20px;

@@ -6,13 +6,14 @@ import ImageMarker from "react-image-marker";
 import TestData from "../../utils/model.json";
 import TestSvg from "../../utils/tutzing.svg";
 import "./map-style.css";
+import { getFileData } from "../../utils/get-data.ts";
 export function MapPage() {
   // РЕВЬЮ: нейминг может запутать, ты называешь константу location, а внутри хранится pathname
-  const location = useLocation().pathname;
+  const pathname = useLocation().pathname;
   const navigate = useNavigate();
   let [markers, setMarkers] = useState([]);
   useEffect(() => {
-    CookieCheck({ navigate, location });
+    CookieCheck({ navigate, pathname });
   }); // Проверка закончился период доступа
   // РЕВЬЮ: в хуке выше ты не передаешь deps, это умышленно?
   // просто хук ниже имеет такую же логику (срабатывать 1 раз), но зависимости преедаются
@@ -33,19 +34,7 @@ export function MapPage() {
       });
     } else {
       // Данных нет, берем данные из файла
-      TestData.forEach((data) => {
-        setMarkers((oldData) => [
-          ...oldData,
-          {
-            //  РЕВЬЮ: для чего данные из x, y и name становятся top, left и textMark?
-            top: data.x,
-            // РЕВЬЮ: зачем -3?
-            left: data.y - 3,
-            textMark: data.name,
-            amount: data.amount,
-          },
-        ]);
-      });
+      getFileData(setMarkers);
     }
   }, []); // Подгрузка первичных элементов
   const CustomMarker = (props) => {
@@ -58,15 +47,15 @@ export function MapPage() {
       }
     }, [props]); // Активируется в случае добавления новых элементов
     return (
-        // РЕВЬЮ: чем вызвана необходимость инлайновых стилей?
-      <div className="marker" style={{ display: "flex" }}>
+      // РЕВЬЮ: чем вызвана необходимость инлайновых стилей?
+      <div className="marker">
         <div
           className="image-marker__marker image-marker__marker--default "
           data-testid="marker"
         ></div>
 
         {/* РЕВЬЮ: чем вызвана необходимость инлайновых стилей? */}
-        <div className="text" style={{ color: "black", marginLeft: "2rem" }}>
+        <div className="text">
           {editable ? ( // Проверка находится ли маркер в режиме редактирования
             <>
               {/* РЕВЬЮ: должна ли форма иметь нестабильные размеры и находиться под соседними маркерами? */}
@@ -74,12 +63,16 @@ export function MapPage() {
                 onSubmit={(e) => {
                   e.preventDefault();
                   // РЕВЬЮ: довольно сложно осознать, что элемент массива markers называется each и почему тут let?
-                  let sendData = markers.map((each) => {
-                    if (each.top === props.top && each.left === props.left) {
+
+                  const sendData = markers.map((eachMarker) => {
+                    if (
+                      eachMarker.top === props.top &&
+                      eachMarker.left === props.left
+                    ) {
                       //Поиск необходимого элемента по координентам
-                      return { ...each, textMark: name, amount: amount }; // Изменение данных
+                      return { ...eachMarker, textMark: name, amount: amount }; // Изменение данных
                     } else {
-                      return each;
+                      return eachMarker;
                     }
                   });
                   setMarkers(sendData);
@@ -112,8 +105,10 @@ export function MapPage() {
               <button
                 className="map-change-button"
                 onClick={() => {
+                  console.log(props);
                   let deleteData = markers.filter((el) =>
                     //  РЕВЬЮ: можно ли как-то упростить
+
                     el?.top === props?.top && el?.left === props?.left // Удаление элемента с определенными координатами
                       ? false
                       : true
@@ -156,22 +151,20 @@ export function MapPage() {
           localStorage.removeItem("data"); // Удаление Array-я с LocalStorage-жа
           setMarkers([]); // Чистка текущих маркеров
           // РЕВЬЮ: дублирование кода, точно такой же проход, что и в useEffect, мб стоит вынести в 1 место?
-          TestData.forEach((data) => {
-            setMarkers((oldData) => [
-              // Получения данных из файла
-              ...oldData,
-              {
-                top: data.x,
-                left: data.y - 3,
-                textMark: data.name,
-                amount: data.amount,
-              },
-            ]);
-          });
+          getFileData(setMarkers);
         }}
         className="reset-button"
       >
         Сбросить
+      </button>
+      <button
+        className="delete-button"
+        onClick={() => {
+          localStorage.setItem("data", []);
+          setMarkers([]);
+        }}
+      >
+        Удалить все
       </button>
       <div className="map-container">
         {/* РЕВЬЮ: что произойдет, если я натыкаю 10 точек на карте, не вводя данные, а потом тыкну 11, введу данные и нажму сохранить? */}
