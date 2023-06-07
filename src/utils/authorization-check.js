@@ -1,10 +1,9 @@
 // РЕВЬЮ: в лучших домах Парижа неиспользуемые импорты убирают
-import { useLocation, useNavigate } from "react-router";
 
 // РЕВЬЮ: нейминг функций всегда с маленькой буквы.
 // Проверка работает таким образом, что в куке не должно быть ничего другого,
 // однако, если ввести вручную в куки любое значение, то можно попасть на экран с картой
-export function cookieCheck(props) {
+export function authorizationCheck(props) {
   if (
     props.pathname === "/quick-resto-test-app/map" &&
     document.cookie !== "user=test"

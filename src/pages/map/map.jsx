@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { cookieCheck } from "../../utils/cookie-check";
+import { authorizationCheck } from "../../utils/authorization-check";
 
 import ImageMarker from "react-image-marker";
 import TestData from "../../utils/model.json";
@@ -13,7 +13,7 @@ export function MapPage() {
   const navigate = useNavigate();
   let [markers, setMarkers] = useState([]);
   useEffect(() => {
-    cookieCheck({ navigate, pathname });
+    authorizationCheck({ navigate, pathname });
   }); // Проверка закончился период доступа
   // РЕВЬЮ: в хуке выше ты не передаешь deps, это умышленно?
   // просто хук ниже имеет такую же логику (срабатывать 1 раз), но зависимости преедаются
